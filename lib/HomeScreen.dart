@@ -1,4 +1,7 @@
+import 'package:app/feature_q1/cat_list_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'feature_q2/cartboard_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,9 +25,8 @@ class HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Heliosito'),
       ),
-      body: const Center(
-        child: Text("Whatup ?"),
-      ),
+      body: Center(
+          child: _selectedIndex == 0 ? CatListScreen() : CarboardScreen()),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

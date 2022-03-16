@@ -9,15 +9,9 @@ class CatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CatBloc(
-        catRepository: CatRepository(),
-      )..add(CatFetchEvent()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Cats 🐈 ‍⬛'),
-        ),
-        body: Text("BODY"),
-      ),
-    );
+        create: (context) => CatBloc(
+              catRepository: CatRepository(),
+            )..add(CatFetchEvent()),
+        child: Text('Cats 🐈 🐈 🐈'));
   }
 }
