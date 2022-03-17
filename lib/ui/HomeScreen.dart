@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'feature_q1/main_screen_q1.dart';
-import 'feature_q2/screen_cartboard.dart';
+import '../feature_q1/main_screen_q1.dart';
+import '../feature_q2/screen_cartboard.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

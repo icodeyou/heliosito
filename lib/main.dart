@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'HomeScreen.dart';
+import 'ui/HomeScreen.dart';
 
 void main() {
   BlocOverrides.runZoned(
