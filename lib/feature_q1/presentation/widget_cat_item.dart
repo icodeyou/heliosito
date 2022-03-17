@@ -10,25 +10,36 @@ class CatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 100,
         decoration: Decorations.myBoxDecoration,
         child: Padding(
           padding: EdgeInsets.all(UI.pad),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                width: 100,
-                child: CircleAvatar(
-                  maxRadius: 100,
-                  backgroundColor: Colors.grey,
-                  backgroundImage:
-                      NetworkImage("https://cdn2.thecatapi.com/images/9no.jpg"),
-                ),
-              ),
-              Expanded(child: Text("e")),
-            ],
-          ),
+          child: Row(mainAxisSize: MainAxisSize.max, children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.grey,
+              backgroundImage: NetworkImage(
+                  "https://cdn2.thecatapi.com/images/M9p3Ql5GH.jpg"),
+            ),
+            SizedBox(width: UI.pad),
+            Expanded(
+                child: Column(children: [
+              CatField("ID : ", _cat.id),
+              CatField("Name : ", _cat.name),
+              CatField("Origin : ", _cat.origin),
+            ])),
+          ]),
         ));
+  }
+
+  Widget CatField(String field, String value) {
+    return Row(
+      children: [
+        Text(
+          '$field : ',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Text(value),
+      ],
+    );
   }
 }
