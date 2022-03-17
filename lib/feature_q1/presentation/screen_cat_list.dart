@@ -36,6 +36,7 @@ class CatListScreen extends StatelessWidget {
         } else if (catState is CatErrorState && _cats.isEmpty) {
           return Text("Error : ${catState.error}");
         }
+        debugPrint("Cats are : $_cats");
         return Text("Cats : $_cats");
       },
     );

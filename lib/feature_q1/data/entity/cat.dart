@@ -17,4 +17,9 @@ class CatEntity {
       origin: json['origin'],
     );
   }
+
+  @override
+  String toString() {
+    return 'Cat: {id: $id, name: $name, origin: $origin}';
+  }
 }
