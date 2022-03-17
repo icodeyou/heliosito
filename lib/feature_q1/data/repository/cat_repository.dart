@@ -7,7 +7,7 @@ class CatRepository {
 
   final CatApiClient _catApiClient;
 
-  static const int _limitPerPage = 10;
+  static const int _limitPerPage = 30;
 
   Future<List<CatEntity>> getCats({
     required int page,
