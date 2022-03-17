@@ -16,8 +16,7 @@ class CatRepository {
       final rawCats = await _catApiClient.getCats(page, _limitPerPage);
       return rawCats.map((e) => CatEntity.fromJson(e)).toList();
     } catch (e) {
-      print("Error parsing cat response : $e");
-      return [];
+      throw ("Error parsing cat response : $e");
     }
   }
 }
