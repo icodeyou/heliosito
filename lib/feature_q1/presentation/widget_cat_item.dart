@@ -7,6 +7,8 @@ class CatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('1 Cat 🐈 : ${_cat.name} from ${_cat.origin}');
+    return Container(
+        color: Colors.yellowAccent,
+        child: Text('1 Cat 🐈 : ${_cat.name} from ${_cat.origin}'));
   }
 }
