@@ -20,7 +20,7 @@ class CatListScreen extends StatelessWidget {
         if (catState is CatSuccessState && catState.cats.isEmpty) {
           _noMoreCats = true;
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("No more cats !")));
+              .showSnackBar(const SnackBar(content: Text("No more cats !")));
         }
         if (catState is CatErrorState) {
           ScaffoldMessenger.of(context)
@@ -31,20 +31,20 @@ class CatListScreen extends StatelessWidget {
       builder: (context, catState) {
         if ((catState is CatInitialState || catState is CatLoadingState) &&
             _cats.isEmpty) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (catState is CatSuccessState) {
           _cats.addAll(catState.cats);
           context.read<CatBloc>().isFetching = false;
         } else if (catState is CatErrorState && _cats.isEmpty) {
-          return errorWidget(context, catState);
+          return _errorWidget(context, catState);
         }
 
-        return listWidget(context, catState);
+        return _listWidget(context, catState);
       },
     );
   }
 
-  Widget errorWidget(BuildContext context, CatErrorState catState) {
+  Widget _errorWidget(BuildContext context, CatErrorState catState) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +64,7 @@ class CatListScreen extends StatelessWidget {
     );
   }
 
-  Widget listWidget(BuildContext context, CatState catState) {
+  Widget _listWidget(BuildContext context, CatState catState) {
     return ListView.separated(
       padding: const EdgeInsets.all(UI.pad),
       controller: _scrollController
@@ -75,7 +75,7 @@ class CatListScreen extends StatelessWidget {
               !context.read<CatBloc>().isFetching) {
             context.read<CatBloc>()
               ..isFetching = true
-              ..add(CatFetchEvent());
+              ..add(const CatFetchEvent());
           }
         }),
       itemCount: _cats.length + 1,
@@ -83,12 +83,12 @@ class CatListScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         if (index == _cats.length) {
           if (_noMoreCats) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
           if (catState is CatLoadingState) {
-            return loadingData(catState);
+            return _loadingData(catState);
           } else {
-            return loadMoreData();
+            return _loadMoreData();
           }
         } else {
           return CatItem(_cats[index]);
@@ -97,7 +97,7 @@ class CatListScreen extends StatelessWidget {
     );
   }
 
-  Widget loadingData(CatLoadingState catState) {
+  Widget _loadingData(CatLoadingState catState) {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(
@@ -105,22 +105,23 @@ class CatListScreen extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 20, width: 20, child: CircularProgressIndicator()),
-          SizedBox(width: 20),
+          const SizedBox(
+              height: 20, width: 20, child: CircularProgressIndicator()),
+          const SizedBox(width: 20),
           Text(catState.message),
         ],
       ),
     );
   }
 
-  Widget loadMoreData() {
+  Widget _loadMoreData() {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(
           top: UI.pad - UI.separatorPadding, bottom: UI.pad),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: const [
           Icon(Icons.keyboard_arrow_down),
           SizedBox(width: 10),
           Text("Load more cats ..."),

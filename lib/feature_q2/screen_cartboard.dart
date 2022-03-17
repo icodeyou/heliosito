@@ -29,7 +29,7 @@ class _CarboardScreenState extends State<CarboardScreen> {
           Text("Received articles : $receivedArticles"),
           Text("Waiting boxes : $waitingBoxes"),
           Text("Sent boxes : $sentBoxes"),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text("Next article : $nextArticle"),
           ElevatedButton(
               onPressed: () {

@@ -12,7 +12,7 @@ class MainQ1Screen extends StatelessWidget {
     return BlocProvider(
         create: (context) => CatBloc(
               catRepository: CatRepository(),
-            )..add(CatFetchEvent()),
+            )..add(const CatFetchEvent()),
         child: CatListScreen());
   }
 }

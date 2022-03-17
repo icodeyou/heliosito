@@ -11,9 +11,9 @@ class CatBloc extends Bloc<CatEvent, CatState> {
 
   CatBloc({
     required this.catRepository,
-  }) : super(CatInitialState()) {
+  }) : super(const CatInitialState()) {
     on<CatFetchEvent>((event, emit) async {
-      emit(CatLoadingState(message: 'Loading Cats'));
+      emit(const CatLoadingState(message: 'Loading Cats'));
       try {
         final cats = await catRepository.getCats(page: page);
         emit(CatSuccessState(cats: cats));
