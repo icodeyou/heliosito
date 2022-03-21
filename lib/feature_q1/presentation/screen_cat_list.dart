@@ -8,38 +8,49 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/entity/cat.dart';
 
-class CatListScreen extends StatelessWidget {
-  List<CatEntity> _cats = [];
+class CatListScreen extends StatefulWidget {
+  @override
+  State<CatListScreen> createState() => _CatListScreenState();
+}
+
+class _CatListScreenState extends State<CatListScreen> {
+  final List<CatEntity> _cats = [];
+  final TextEditingController editingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+
   bool _noMoreCats = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CatBloc, CatState>(
       listener: (context, catState) {
-        if (catState is CatSuccessState && catState.cats.isEmpty) {
-          _noMoreCats = true;
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("No more cats !")));
-        }
         if (catState is CatErrorState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(catState.error)));
           context.read<CatBloc>().isFetching = false;
+        } else if (catState is CatSuccessState) {
+          _cats.clear();
+          _cats.addAll(catState.cats);
+          context.read<CatBloc>().isFetching = false;
+          if (catState.noMoreCats) {
+            _noMoreCats = true;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text("No more cats !")));
+          }
+        } else if (catState is CatFilterState) {
+          _cats.clear();
+          _cats.addAll(catState.filteredCats);
         }
       },
       builder: (context, catState) {
         if ((catState is CatInitialState || catState is CatLoadingState) &&
             _cats.isEmpty) {
           return const CircularProgressIndicator();
-        } else if (catState is CatSuccessState) {
-          _cats.addAll(catState.cats);
-          context.read<CatBloc>().isFetching = false;
-        } else if (catState is CatErrorState && _cats.isEmpty) {
+        } else if (catState is CatErrorState) {
           return _errorWidget(context, catState);
+        } else {
+          return _listWidget(context, catState);
         }
-
-        return _listWidget(context, catState);
       },
     );
   }
@@ -53,10 +64,10 @@ class CatListScreen extends StatelessWidget {
           onPressed: () {
             context.read<CatBloc>()
               ..isFetching = true
-              ..add(CatFetchEvent());
+              ..add(const CatFetchEvent());
           },
-          icon: Icon(Icons.refresh),
-          label: Text("Refresh"),
+          icon: const Icon(Icons.refresh),
+          label: const Text("Refresh"),
         ),
         const SizedBox(height: 20),
         Text(catState.error, textAlign: TextAlign.center),
@@ -65,35 +76,61 @@ class CatListScreen extends StatelessWidget {
   }
 
   Widget _listWidget(BuildContext context, CatState catState) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(UI.pad),
-      controller: _scrollController
-        ..addListener(() {
-          if (!_noMoreCats &&
-              _scrollController.offset ==
-                  _scrollController.position.maxScrollExtent &&
-              !context.read<CatBloc>().isFetching) {
-            context.read<CatBloc>()
-              ..isFetching = true
-              ..add(const CatFetchEvent());
-          }
-        }),
-      itemCount: _cats.length + 1,
-      separatorBuilder: (context, index) => const SizedBox(height: UI.pad),
-      itemBuilder: (context, index) {
-        if (index == _cats.length) {
-          if (_noMoreCats) {
-            return const SizedBox.shrink();
-          }
-          if (catState is CatLoadingState) {
-            return _loadingData(catState);
-          } else {
-            return _loadMoreData();
-          }
-        } else {
-          return CatItem(_cats[index]);
-        }
-      },
+    return Column(
+      children: [
+        Container(
+          color: UI.backgroundColor,
+          padding:
+              const EdgeInsets.fromLTRB(UI.pad, UI.pad, UI.pad, UI.pad / 2),
+          child: TextField(
+            onChanged: (value) {
+              context.read<CatBloc>().filterCatsByName(value);
+            },
+            controller: editingController,
+            decoration: const InputDecoration(
+                labelText: "Search",
+                hintText: "Type the name of a cat",
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(UI.cornerRadius)))),
+          ),
+        ),
+        Expanded(
+          child: ListView.separated(
+            padding:
+                const EdgeInsets.fromLTRB(UI.pad, UI.pad / 2, UI.pad, UI.pad),
+            controller: _scrollController
+              ..addListener(() {
+                if (!_noMoreCats &&
+                    _scrollController.offset ==
+                        _scrollController.position.maxScrollExtent &&
+                    !context.read<CatBloc>().isFetching) {
+                  context.read<CatBloc>()
+                    ..isFetching = true
+                    ..add(const CatFetchEvent());
+                }
+              }),
+            itemCount: _cats.length + 1,
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: UI.pad),
+            itemBuilder: (context, index) {
+              if (index == _cats.length) {
+                if (_noMoreCats) {
+                  return const SizedBox.shrink();
+                }
+                if (catState is CatLoadingState) {
+                  return _loadingData(catState);
+                } else {
+                  return _loadMoreData();
+                }
+              } else {
+                return CatItem(_cats[index]);
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 

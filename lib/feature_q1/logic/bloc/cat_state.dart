@@ -18,9 +18,19 @@ class CatLoadingState extends CatState {
 
 class CatSuccessState extends CatState {
   final List<CatEntity> cats;
+  final bool noMoreCats;
 
   const CatSuccessState({
     required this.cats,
+    required this.noMoreCats,
+  });
+}
+
+class CatFilterState extends CatState {
+  final List<CatEntity> filteredCats;
+
+  const CatFilterState({
+    required this.filteredCats,
   });
 }
 

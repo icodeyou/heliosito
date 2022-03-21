@@ -1,4 +1,5 @@
 import 'package:app/feature_q1/presentation/screen_cat_detail.dart';
+import 'package:app/ui/styles/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,8 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Heliosito',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+          primarySwatch: Colors.teal,
+          scaffoldBackgroundColor: UI.backgroundColor),
       initialRoute: routeName,
       routes: {
         routeName: (context) => const HomeScreen(),
