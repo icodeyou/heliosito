@@ -1,3 +1,4 @@
+import 'package:app/feature_q1/presentation/screen_cat_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +16,8 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  static const routeName = '/';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,9 +25,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      initialRoute: '/',
+      initialRoute: routeName,
       routes: {
-        '/': (context) => const HomeScreen(),
+        routeName: (context) => const HomeScreen(),
+        CatDetailScreen.routeName: (context) => const CatDetailScreen(),
       },
     );
   }

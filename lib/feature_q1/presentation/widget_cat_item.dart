@@ -1,18 +1,26 @@
 import 'package:app/feature_q1/data/entity/cat.dart';
+import 'package:app/feature_q1/presentation/arguments.dart';
+import 'package:app/feature_q1/presentation/screen_cat_detail.dart';
 import 'package:app/ui/styles/constants.dart';
 import 'package:app/ui/styles/decorations.dart';
 import 'package:flutter/material.dart';
 
 class CatItem extends StatelessWidget {
   final CatEntity _cat;
-  const CatItem(this._cat);
+  const CatItem(this._cat, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: Decorations.myBoxDecoration,
+    return Ink(
+      decoration: Decorations.myBoxDecoration,
+      child: InkWell(
+        onTap: () {
+          print('Click on cat ${_cat.id}');
+          Navigator.pushNamed(context, CatDetailScreen.routeName,
+              arguments: Arguments(cat: _cat));
+        },
         child: Padding(
-          padding: EdgeInsets.all(UI.pad),
+          padding: const EdgeInsets.all(UI.pad),
           child: Row(mainAxisSize: MainAxisSize.max, children: [
             const CircleAvatar(
               radius: 30,
@@ -28,7 +36,9 @@ class CatItem extends StatelessWidget {
               _catField("Origin : ", _cat.origin),
             ])),
           ]),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _catField(String field, String value) {
