@@ -1,4 +1,3 @@
-//@JsonSerializable(createToJson: false)
 class CatEntity {
   String id;
   String name;
